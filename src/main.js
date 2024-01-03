@@ -13,8 +13,8 @@ import ToegewezenRaportages from './components/ToegewezenRaportages.vue'
 import UitgevoerdeRaportages from './components/UitgevoerdeRaportages.vue'
 import KennisBase from './components/KennisBase.vue'
 import InstellingenComponent from './components/InstellingenComponent.vue'
-// import Inspecties from './components/inspectiesComponent.vue';
-// import json from './json/db.json'; // Import your JSON data
+import Inspecties from './components/inspectiesComponent.vue';
+import json from './json/db.json'; // Import your JSON data
 
 const vuetify = createVuetify({
   components,
@@ -28,7 +28,7 @@ const router = createRouter({
     { path: '/uitgevoerde-raportages', component: UitgevoerdeRaportages },
     { path: '/Kennisbase', component: KennisBase },
     { path: '/instellingen', component: InstellingenComponent },
-    // { path: '/data-display', name: 'Inspecties', component: Inspecties, props: { myJson: json } },
+    { path: '/data-display', name: 'Inspecties', component: Inspecties, props: { myJson: json } },
   ],
 })
 
