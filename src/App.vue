@@ -57,12 +57,27 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await fetch('https://my-json-server.typicode.com/Maxthaar/eindopdracht/db');
+        const response = await fetch('https://my-json-server.typicode.com/Maxthaar/eindopdracht/src/db');
         if (!response.ok) {
           throw new Error('Failed to fetch data from the API');
         }
-        // Parse the JSON response and set it to the myJson data property
-        this.myJson = await response.json();
+
+        const jsonData = await response.json();
+
+        // Gebruik het datamodel inline om de gegevens te structureren
+        this.myJson = jsonData.inspections.map(inspection => ({
+          id: inspection.id,
+          buildingName: inspection.buildingName,
+          status: inspection.status,
+          inspector: inspection.inspector,
+          photo: inspection.photo,
+          date: inspection.date,
+          details: inspection.details,
+        }));
+
+        // Sorteer de gegevens op datum (in oplopende volgorde)
+        this.myJson.sort((a, b) => new Date(a.date) - new Date(b.date));
+
         console.log('myJson:', this.myJson);
       } catch (error) {
         console.error('Error fetching data:', error.message);
