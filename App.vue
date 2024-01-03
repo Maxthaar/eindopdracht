@@ -16,6 +16,17 @@
     <!-- Content -->
     <v-main>
       <router-view></router-view>
+
+      <!-- Display data from API -->
+      <div v-if="myJson && myJson.inspections && myJson.inspections.length">
+        <h2>Data from API</h2>
+        <div v-for="(item, index) in myJson.inspections" :key="index">
+          <p>Building Name: {{ item.buildingName }}</p>
+          <p>Status: {{ item.status }}</p>
+          <p>Inspector: {{ item.inspector }}</p>
+          <!-- Add more properties as needed -->
+        </div>
+      </div>
     </v-main>
 
     <!-- Bottom Tab Bar -->
@@ -28,7 +39,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -38,14 +48,30 @@ export default {
         { title: 'Kennisbase', icon: 'mdi-book-open', route: '/kennisbase' },
         { title: 'Instellingen', icon: 'mdi-cog', route: '/instellingen' },
       ],
+      myJson: null,
     };
   },
+  mounted() {
+    this.fetchData();
+  },
   methods: {
+    async fetchData() {
+      try {
+        const response = await fetch('https://my-json-server.typicode.com/Maxthaar/eindopdracht/db');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data from the API');
+        }
+        // Parse the JSON response and set it to the myJson data property
+        this.myJson = await response.json();
+        console.log('myJson:', this.myJson);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    },
     navigate(route) {
       this.$router.push(route);
     },
   },
-  
 };
 </script>
 
